@@ -1,0 +1,33 @@
+* { margin: 0; padding: 0; box-sizing: border-box;   }
+body { font: 13px Helvetica, Arial; overflow: hidden; background-size: cover; }
+a { text-decoration: dashed; font-style: italic; color: black; border-bottom: 1px dotted black; }
+
+.center_content { position: absolute; width: 100%; height: 100%; display:flex; align-items:center; justify-content: center; font-weight: bold; text-shadow: 1px 1px 0 #fff; }
+.club_background { background-size: cover; background-image: url('black-and-white-club.jpg'); }
+.hover_box { border-radius: 20px; margin: 5px; padding: 20px; background: rgba(255,255,255,0.75); font: 20px Helvetica, Arial; }
+.nice_button { width: 20%; background: rgb(130, 224, 255); border: none; padding: 10px; font: 20px Helvetica, Arial; }
+
+#chatbar { color: 'white'; background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; height: 42px; }
+#chatbar input { border: 0; padding: 10px; width: 80%; margin-right: 0.5%; }
+#chatbar #send { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+#chatbar #disco { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+
+#mainWrapper { width: 100vw; height: 100vh; }
+#beats_visualiserWrapper { position: absolute; top: 0; left: 0; z-index: -1; border: 0px solid black; width: 100vw; height: 100vh; background-color: rgba(255,255,255,1); }
+#beats_visualiser { position: fixed; top: 0; left: 0; border: 0px solid black;}
+
+#playback_information_popup { position: fixed; top: 0; right: 0; width: 125px; display: none; }
+#playback_progress_bar { position: relative;  }
+#playback_progress_bar_content { position: absolute; width: 100%; height: 100%; display:flex;
+align-items:center; justify-content: center; font-weight: bold; text-shadow: 1px 1px 0 #fff; }
+.ui-progressbar-value { margin: 0px; padding: 0px; background-color: #0f0; box-sizing: initial; }
+
+#tempo_wrapper { position: absolute; right: 0; width: 125px; height: 25px; border: 1px solid #ddd; border-radius: 3px; margin-top: 3px; background: #fff; }
+#tempo_wrapper_content, #tempo_wrapper_content_indicator { position: absolute; width: 100%; height: 100%; display:flex; align-items:center; justify-content: center; font-weight: bold; text-shadow: 1px 1px 0 #fff; }
+
+#analysis_wrapper { position: absolute; width: 125px; height: 75px; border: 1px solid #ddd; border-radius: 3px; margin-top: 30px; background: #fff; }
+#analysis_wrapper_content { position: absolute; width: 100%; height: 100%; display:flex; align-items:center; justify-content: center; font-weight: bold; text-shadow: 1px 1px 0 #fff; }
+
+#messages { list-style-type: none; margin: 0; padding: 0; margin-bottom: 43px; }
+#messages li { padding: 5px 10px; background-color: rgba(0, 0, 0, 0.1); }
+#messages li:nth-child(odd) { background-color: rgba(0, 0, 0, 0.2); }

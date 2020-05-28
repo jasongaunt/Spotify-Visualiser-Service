@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Spotify Real-time Playback Analyser</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
+    <script>
+      // Vars
+      const urlParams = new URLSearchParams(window.location.search);
+      // On ready
+      $(function () {
+        var spotify_grant_code = null;
+        var force_logout = false;
+        try {
+          spotify_grant_code = urlParams.get('code');
+          force_logout = urlParams.get('logout');
+        } catch (e) { /* Do nothing */ }
+        if (force_logout) {
+          document.cookie = encodeURIComponent("SVS_Session") + "=; max-age=0; path=/; secure; samesite";
+        }
+        if (spotify_grant_code === null) {
+          // No spotify_grant_code so we assume we need to request permission
+          $.get("get_spotify_client_id", function(result) {
+            let $newbutton = $("<button id=\"letsgo\" type=\"button\" class=\"nice_button\" title=\"DAVID BOWEHHH\" onClick=\"window.location.href='https://accounts.spotify.com/authorize?client_id=" + result + "&scope=user-read-playback-state%20user-read-currently-playing&response_type=code&redirect_uri=" + encodeURIComponent(window.location.href.replace(window.location.search, '')) + "'\">Lets dance!</button>");
+            $newbutton.appendTo($("#gobutton"));
+          });
+        } else {
+          // We have an access token, send it to the service so it can get a session token
+          var socket = io.connect('', {path: '/mykeepon/stream/socket.io/'});
+          socket.on('login_request', function(msg){
+              socket.emit('spotify_grant_code', {
+                'code': spotify_grant_code,
+                'url': window.location.href.replace(window.location.search, '')
+              });
+          });
+          socket.on('session_cookie', function(msg){
+            document.cookie = encodeURIComponent("SVS_Session") + "=" + encodeURIComponent(msg) + "; max-age=31536000; path=/; secure; samesite";
+            window.location.href='webclient.html';
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="mainWrapper" class="center_content club_background">
+      <div style="width: 800px;  height: 600px;" class="hover_box">
+        <center>
+          <h1>Welcome!</h1><br>
+        </center>
+        <p>Hello there clubbers.</p>
+        <br>
+        <p>This NodeJS-powered web app was originally written to synchronise the motions of a funky little dancing robot called <a href="https://en.wikipedia.org/wiki/Keepon" title="https://en.wikipedia.org/wiki/Keepon" target="_blank">MyKeepon</a>, however it's quickly grown into something much, much more.</p>
+        <br>
+        <p>The service powering this web page will not only display some neat visualisations based on your current choice of music on Spotify, it will also allow any <a href="https://socket.io/" title="https://socket.io/" target="_blank">socket.io</a> client to connect and receive the same real-time streaming music analysis.</p>
+        <br>
+        <p>You can use it to power your own robots, home lighting installations or more.</p>
+        <br>
+        <p>If you <i>do</i> build something cool with this, please <a href="https://twitter.com/jasongaunt" title="https://twitter.com/jasongaunt" target="_blank">let me know</a> 😁</p>
+        <br>
+        <p>The source code to this NodeJS app is available on <a href="https://github.com/jasongaunt/Spotify-Visualiser-Service" title="https://github.com/jasongaunt/Spotify-Visualiser-Service" target="_blank">my Github account</a>. Enjoy.</p>
+        <br>
+        <center >
+          <p>Click the blue button to let this service get your playback info.</p>
+          <p>You can revoke access anytime in your Spotify account <a href="https://www.spotify.com/uk/account/apps/" title="https://www.spotify.com/uk/account/apps/" target="_blank">here</a>.</p>
+          <br >
+          <div id="gobutton"></div>
+        </center>
+      </div>
+    </div>
+  </body>
+</html>
