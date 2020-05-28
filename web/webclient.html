@@ -110,12 +110,12 @@
       }
       // On ready
       $(function () {
+        var current_path = window.location.href.split('/').pop();
         // Make sure we've got our session cookie, can't do anything without it
         if (document.cookie.split(';').some((item) => item.trim().startsWith('SVS_Session='))) {
             // Do nothing
         } else {
           alert("Sorry, you need a session to use this page...");
-          let current_path = window.location.href.split('/').pop();
           window.location.href = window.location.href.replace(current_path, '?logout=true');
         }
         // Initialise variables we'll use later
@@ -139,7 +139,7 @@
                 window.resizeEvt = setTimeout(updateLayout, 250);
             });
         });
-        var socket = io.connect('', {path: '/mykeepon/stream/socket.io/'});
+        var socket = io.connect('', {path: window.location.pathname.replace(current_path, '') + 'socket.io/'});
         $('form').submit(function(e){
           e.preventDefault(); // prevents page reloading
           if ($('#m').val().trim() == "") { $('#m').val(''); return false; }

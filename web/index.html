@@ -13,6 +13,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       // On ready
       $(function () {
+        var current_path = window.location.href.split('/').pop();
         var spotify_grant_code = null;
         var force_logout = false;
         try {
@@ -30,7 +31,7 @@
           });
         } else {
           // We have an access token, send it to the service so it can get a session token
-          var socket = io.connect('', {path: '/mykeepon/stream/socket.io/'});
+          var socket = io.connect('', {path: window.location.pathname.replace(current_path, '') + 'socket.io/'});
           socket.on('login_request', function(msg){
               socket.emit('spotify_grant_code', {
                 'code': spotify_grant_code,
