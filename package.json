@@ -4,7 +4,7 @@
   "description": "Polls Spotify API and returns playback information realtime",
   "dependencies": {
     "console-stamp": "^0.2.9",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "md5": "^2.2.1",
     "mysql": "^2.18.1",
     "promise": "^8.1.0",
